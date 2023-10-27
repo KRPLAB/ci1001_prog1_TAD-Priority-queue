@@ -88,3 +88,38 @@ int insere_lef(struct lef_t *l, struct evento_t *e)
 
     return 1;
 }
+
+struct evento_t *retira_lef(struct lef_t *l)
+{
+    struct nodo_lef_t *primeiro_nodo = l->primeiro;
+    struct evento_t *evento_aux = primeiro_nodo->evento;
+
+    if (vazia_lef(l))
+        return NULL;
+
+    primeiro_nodo = l->primeiro;
+    evento_aux = primeiro_nodo->evento;
+    l->primeiro = primeiro_nodo->prox;
+
+    free(primeiro_nodo);
+
+    return evento_aux;
+}
+
+void imprime_lef(struct lef_t *l)
+{
+    struct nodo_lef_t *nodo = l->primeiro;
+    int total_eventos = 0;
+
+    printf("LEF:\n");
+
+    while (nodo != NULL)
+    {
+        struct evento_t *evento = nodo->evento;
+        printf("  tempo %d tipo %d d1 %d d2 %d\n", evento->tempo, evento->tipo, evento->dado1, evento->dado2);
+        nodo = nodo->prox;
+        total_eventos++;
+    }
+
+    printf("  Total %d eventos\n", total_eventos);
+}
