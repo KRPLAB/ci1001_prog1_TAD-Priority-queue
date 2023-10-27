@@ -56,3 +56,35 @@ struct lef_t *destroi_lef(struct lef_t *l)
 
     return NULL;
 }
+
+int insere_lef(struct lef_t *l, struct evento_t *e)
+{
+    struct nodo_lef_t *novo, *aux, *ant;
+
+    if (!(novo = malloc(sizeof(struct nodo_lef_t))))
+        return 0;
+
+    novo->evento = e;
+
+    if (vazia_lef(l) || e->tempo < l->primeiro->evento->tempo)
+    {
+        novo->prox = l->primeiro;
+        l->primeiro = novo;
+        return 1;
+    }
+
+    aux = l->primeiro;
+    ant = NULL;
+    while (aux != NULL && e->tempo >= aux->evento->tempo)
+    {
+        ant = aux;
+        aux = aux->prox;
+    }
+
+    if (ant != NULL)
+        ant->prox = novo;
+
+    novo->prox = aux;
+
+    return 1;
+}
